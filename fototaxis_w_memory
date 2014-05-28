@@ -1,0 +1,52 @@
+// fototaxis
+// by tomas de camino <http://tomasdecamino.com> 
+// This example code is in the public domain.
+
+
+#include <Servo.h> 
+
+Servo myservo;
+int p = 90; //memory for position
+int s = 3; //angle steps
+
+void setup() 
+{ 
+  myservo.attach(9);  // attaches the servo on pin 9 to the servo object 
+  myservo.write(90);
+  delay(500);
+  Serial.begin(9600);
+} 
+
+
+void loop() 
+{ 
+
+  myservo.write(p); // go to position p
+  delay(300);
+  look(); //check light
+
+} 
+
+int look(){
+  //move left and check the light
+  myservo.write(checkMinMax(p-s));
+  delay(300);
+  int l = analogRead(A0);//store
+  //move right and check the light
+  myservo.write(checkMinMax(p+s));
+  delay(300);
+  int r = analogRead(A0);  //store
+  //check which one is higher and set
+  if(l>r){
+    p=checkMinMax(p-s); 
+  }
+  else{
+    p=checkMinMax(p+s);  
+  }
+
+}
+
+//make sure it stays between 0 and 180
+int checkMinMax(int p){
+ return constrain(p,0,180); 
+}
