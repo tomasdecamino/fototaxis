@@ -1,0 +1,30 @@
+// fototaxis
+// by tomas de camino <http://tomasdecamino.com> 
+// This example code is in the public domain.
+
+
+#include <Servo.h> 
+
+Servo myservo;
+int p = 90;
+
+void setup() 
+{ 
+  myservo.attach(9);  // attaches the servo on pin 9 to the servo object 
+  myservo.write(p);
+  delay(500);
+  Serial.begin(9600);
+} 
+
+
+void loop() 
+{ 
+  Serial.println(analogRead(A0));
+  if(analogRead(A0)>700){
+    p=constrain(p+random(-1,1),0,180);//slow movement if light is high
+  }else{
+    p=constrain(p+random(-20,20),0,180);//fast movement is light is high
+  }
+  myservo.write(p); // go to position p
+  delay(500);
+} 
